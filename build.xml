@@ -1,0 +1,64 @@
+<project name="Buildmanagement" default="run" basedir=".">
+    <!-- Properties -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="doc.dir" value="${build.dir}/doc"/>
+    <property name="lib.dir" value="lib"/>
+
+    <!-- CLEAN Task -->
+    <target name="clean">
+        <echo message="Cleaning build directory..."/>
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- GET Task -->
+    <target name="get" depends="clean">
+        <echo message="Creating directories..."/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+        <mkdir dir="${doc.dir}"/>
+    </target>
+
+    <!-- COMPILE Task -->
+    <target name="compile" depends="get">
+        <echo message="Compiling source files..."/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+            <classpath>
+                <pathelement path="${lib.dir}/rt.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- JAR Task -->
+    <target name="jar" depends="compile">
+        <echo message="Creating JAR file..."/>
+        <jar destfile="${jar.dir}/buildmanagement.jar">
+            <manifest>
+                <attribute name="Main-Class" value="buiesa.Taschenrechner2"/>
+            </manifest>
+            <fileset dir="${classes.dir}"/>
+        </jar>
+    </target>
+
+    <!-- TEST Task -->
+    <target name="test" depends="compile">
+        <echo message="Testing not implemented"/>
+        <!-- Add your testing framework here, e.g., JUnit -->
+    </target>
+
+    <!-- RUN Task -->
+    <target name="run" depends="jar">
+        <echo message="Running the application..."/>
+        <java jar="${jar.dir}/buildmanagement.jar" fork="true"/>
+    </target>
+
+    <!-- DOC Task -->
+    <target name="doc" depends="get">
+        <echo message="Generating Javadoc..."/>
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dir}"/>
+    </target>
+</project>
+
+
